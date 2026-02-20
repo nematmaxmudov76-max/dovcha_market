@@ -1,0 +1,18 @@
+[project]
+name = "dovcha-market"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "alembic>=1.18.4",
+    "fastapi[all]>=0.129.0",
+    "psycopg2-binary>=2.9.11",
+    "pydantic>=2.12.5",
+    "pydantic-settings>=2.13.1",
+    "python-jose>=3.5.0",
+    "redis>=7.2.0",
+    "ruff>=0.15.2",
+    "sqlalchemy>=2.0.46",
+    "starlette-admin>=0.16.0",
+]
