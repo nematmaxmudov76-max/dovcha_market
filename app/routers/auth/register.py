@@ -16,13 +16,14 @@ async def register_user(db: db_dep, create_data: UserRegisterRequest):
     stmt = select(User).where(User.email == create_data.email)
     user = db.execute(stmt).scalars().first()
 
-    if user:
+    if not user:
+        user = User(
+            email=create_data.email,
+            password_hash=password_hash(create_data.password_hash),
+            is_active=False,
+        )
+    if user.is_active:
         raise HTTPException(status_code=400, detail="User  already exsist")
-    user = User(
-        email=create_data.email,
-        password_hash=password_hash(create_data.password_hash),
-        is_active=False,
-    )
 
     secret_code = secrets.token_hex(16)
     send_email(

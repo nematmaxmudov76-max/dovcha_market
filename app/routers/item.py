@@ -48,23 +48,20 @@ async def item_list(session: db_dep, current_user: current_user_jwt_dep):
 
     return res
 
-@router.get("/one",response_model=ItemCreateResponse)
-async def item_one(session:db_dep,current_user:current_user_jwt_dep,item_id:int):
-     
+
+@router.get("/one", response_model=ItemCreateResponse)
+async def item_one(session: db_dep, current_user: current_user_jwt_dep, item_id: int):
 
     if (
         not current_user.is_active
         or not current_user.is_admin
         or not current_user.is_staff
     ):
-        raise HTTPException(status_code=403,detail="user is not active ")
-    
-    stmt=select(Item).where(Item.id==item_id)
-    res=session.execute(stmt).scalars().first()
+        raise HTTPException(status_code=403, detail="user is not active ")
+
+    stmt = select(Item).where(Item.id == item_id)
+    res = session.execute(stmt).scalars().first()
     if not res:
-        raise HTTPException(status_code=404,detail="Item not found")
-    
+        raise HTTPException(status_code=404, detail="Item not found")
+
     return res
-
-
-     
