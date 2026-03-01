@@ -60,7 +60,7 @@ class Shop(BaseModel):
         BigInteger, ForeignKey("users.id", ondelete="CASCADE")
     )
     image_id: Mapped[int] = mapped_column(
-        BigInteger, ForeignKey("images.id", ondelete="SET NULL")
+        BigInteger, ForeignKey("images.id", ondelete="SET NULL"), nullable=True
     )
     name: Mapped[str] = mapped_column(String(100))
     description: Mapped[str] = mapped_column(Text, nullable=True)

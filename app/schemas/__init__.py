@@ -6,6 +6,9 @@ from .auth_schema import (
 )  # noqa
 from .dependencies import current_user_jwt_dep
 from .item import ItemCreateRequest, ItemCreateResponse, ItemUpdateRequest
+from .shop import ShopCreateRequest, ShopCreateResponse
+from .cart import UserCartCreateResponset, ItemCartsIn
+from .category import CategoryCreateRequest, SubcategoryCreateRequest
 
 
 __all__ = [
@@ -17,4 +20,10 @@ __all__ = [
     "ItemCreateRequest",
     "ItemCreateResponse",
     "ItemUpdateRequest",
+    "ShopCreateRequest",
+    "ShopCreateResponse",
+    "UserCartCreateResponset",
+    "ItemCartsIn",
+    "CategoryCreateRequest",
+    "SubcategoryCreateRequest",
 ]

@@ -52,7 +52,7 @@ def decode_jwt_token(token: str):
 
 
 def verify_password(plain_password: str, hashed_password: str):
-    return pwd_context.verify(plain_password, hashed_password)
+    return pwd_context.verify(hashed_password, plain_password)
 
 
 def send_email(to_email: str, subject: str, body: str):

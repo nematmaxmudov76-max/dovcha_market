@@ -31,7 +31,7 @@ async def register_user(db: db_dep, create_data: UserRegisterRequest):
         "Email confiramtion",
         f"Your confirmation code is {secret_code}",
     )
-    redis_client.setex(secret_code, 60, create_data.email)
+    redis_client.setex(secret_code, 120, create_data.email)
 
     stmt = select(User)
     exsisting_user = db.execute(stmt).scalars().first()

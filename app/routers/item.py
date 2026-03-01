@@ -65,3 +65,33 @@ async def item_one(session: db_dep, current_user: current_user_jwt_dep, item_id:
         raise HTTPException(status_code=404, detail="Item not found")
 
     return res
+
+
+@router.get("/filter", response_model=list[ItemCreateResponse])
+async def item_search(db: db_dep, title):
+    stmt = select(Item).where(Item.name.ilike(f"%{title}%"))
+    item = db.execute(stmt).scalars().all()
+
+    return item
+
+
+@router.get(
+    "/search",
+    response_model=list[ItemCreateResponse],
+    summary="bi itemni category,is_active va name bo;yicha qidirish!!",
+)
+async def search(
+    db: db_dep, name: str | None, subcategory_id: int | None, is_active: bool | None
+):
+
+    if is_active is not None:
+        stmt = select(Item).where(Item.is_active == is_active)
+    if name:
+        stmt = select(Item).where(Item.name.ilike(f"%{name}%"))
+
+    if subcategory_id:
+        stmt = select(Item).where(Item.subcategory_id == subcategory_id)
+
+    item = db.execute(stmt).scalars().all()
+
+    return item

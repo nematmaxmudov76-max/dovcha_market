@@ -17,7 +17,10 @@ def get_current_user_jwt(session: db_dep, credintilas: credentials_dep):
     if not credintilas:
         raise HTTPException(status_code=401, detail="Invalid credintials")
     decode_data = decode_jwt_token(credintilas.credentials)
-    user_id, exp = decode_data["user_id"], datetime.fromtimestamp(decode_data["exp"])
+    user_id, exp = (
+        decode_data["user_id"],
+        datetime.fromtimestamp(decode_data["exp"], tz=timezone.utc),
+    )
 
     if exp < datetime.now(timezone.utc):
         raise HTTPException(status_code=401, detail="Token expired!")
@@ -28,7 +31,7 @@ def get_current_user_jwt(session: db_dep, credintilas: credentials_dep):
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
 
-    return User
+    return user
 
 
 current_user_jwt_dep = Annotated[User, Depends(get_current_user_jwt)]

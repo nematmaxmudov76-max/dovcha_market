@@ -26,7 +26,7 @@ class JSONAuthProvider(AuthProvider):
         if user and not user.is_admin:
             raise LoginFailed("User is not admin")
 
-        if not verify_password(password, user.password_hash):
+        if not verify_password(user.password_hash, password):
             raise LoginFailed("Invalid Password. ")
         access_token, refresh_token = generate_jwt_tokens(user.id)
         token = refresh_token if remember_me else access_token
@@ -47,7 +47,7 @@ class JSONAuthProvider(AuthProvider):
         return response
 
     async def is_authenticated(self, request: Request):
-        token = request.get("access_token")
+        token = request.cookies.get("access_token")
         if not token:
             return None
         try:
