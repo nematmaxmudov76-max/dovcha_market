@@ -13,7 +13,6 @@ credentials_dep = Annotated[HTTPAuthorizationCredentials, Depends(jwt_security)]
 
 
 def get_current_user_jwt(session: db_dep, credintilas: credentials_dep):
-
     if not credintilas:
         raise HTTPException(status_code=401, detail="Invalid credintials")
     decode_data = decode_jwt_token(credintilas.credentials)
@@ -35,3 +34,6 @@ def get_current_user_jwt(session: db_dep, credintilas: credentials_dep):
 
 
 current_user_jwt_dep = Annotated[User, Depends(get_current_user_jwt)]
+
+# TODO: remove jwt
+# TODO: add dependency for admin

@@ -16,6 +16,7 @@ router = APIRouter(prefix="/category", tags=["Category"])
 async def category_create(
     session: db_dep, current_user: current_user_jwt_dep, data: CategoryCreateRequest
 ):
+    # TODO: remove this API. Only admin creates
     category = Category(name=data.name)
 
     session.add(category)

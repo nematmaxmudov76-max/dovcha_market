@@ -11,6 +11,7 @@ router = APIRouter(prefix="/shop", tags=["Shop"])
 async def shop_create(
     db: db_dep, create_data: ShopCreateRequest, current_user: current_user_jwt_dep
 ):
+    # TODO: check should be in dependency
     if (
         not (current_user.is_staff or current_user.is_admin)
         and not current_user.is_active
@@ -32,6 +33,7 @@ async def shop_create(
 
 @router.get("/list", response_model=list[ShopCreateResponse])
 async def shop_list(db: db_dep):
+    # TODO: filter, search
     stmt = select(Shop)
     shops = db.execute(stmt).scalars().all()
 

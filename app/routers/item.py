@@ -14,6 +14,8 @@ router = APIRouter(prefix="/item", tags=["Item"])
 async def item_create(
     session: db_dep, current_user: current_user_jwt_dep, create_data: ItemCreateRequest
 ):
+    # TODO: remove admin check. Users can also add
+    # TODO: check if user has any shop. Link product to shop
     if (
         not current_user.is_active
         or not current_user.is_admin
@@ -39,9 +41,12 @@ async def item_create(
 
 @router.get("/list", response_model=list[ItemCreateResponse])
 async def item_list(session: db_dep, current_user: current_user_jwt_dep):
+    # TODO: fix - items should be ordered in some way (rating, price, name query paramda berish)
+    # TODO: filter by is_active
+    # TODO: add pagination
 
     if not current_user.is_active:
-        raise HTTPException(status_code=404, detail="User is not acitve ")
+        raise HTTPException(status_code=404, detail="User not found.")
 
     stmt = select(Item)
     res = session.execute(stmt).scalars()
@@ -51,7 +56,9 @@ async def item_list(session: db_dep, current_user: current_user_jwt_dep):
 
 @router.get("/one", response_model=ItemCreateResponse)
 async def item_one(session: db_dep, current_user: current_user_jwt_dep, item_id: int):
-
+    # TODO: move item_id to path param
+    # TODO: so only admins can see the item detail?
+    # TODO: admin checks should be in dependency
     if (
         not current_user.is_active
         or not current_user.is_admin
@@ -69,6 +76,7 @@ async def item_one(session: db_dep, current_user: current_user_jwt_dep, item_id:
 
 @router.get("/filter", response_model=list[ItemCreateResponse])
 async def item_search(db: db_dep, title):
+    # TODO: remove this API. Filter occurs in list
     stmt = select(Item).where(Item.name.ilike(f"%{title}%"))
     item = db.execute(stmt).scalars().all()
 
@@ -83,6 +91,7 @@ async def item_search(db: db_dep, title):
 async def search(
     db: db_dep, name: str | None, subcategory_id: int | None, is_active: bool | None
 ):
+    # TODO: remove this API - search occurs in list
 
     if is_active is not None:
         stmt = select(Item).where(Item.is_active == is_active)
