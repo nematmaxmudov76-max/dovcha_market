@@ -15,7 +15,6 @@ from app.config import settings
 
 class JSONAuthProvider(AuthProvider):
     async def login(self, email, password, remember_me, request, response: Response):
-
         db = next(get_db())
         stmt = select(User).where(User.email == email.strip())
         user = db.execute(stmt).scalars().first()

@@ -2,14 +2,16 @@ from fastapi import APIRouter, HTTPException
 from sqlalchemy import select
 
 from app.database import db_dep
-from app.schemas import UserLoginRequest, UserProfilResponse, current_user_jwt_dep
+from app.schemas import UserLoginRequest
 from app.models import User
 from app.utils import verify_password, generate_jwt_tokens
 
-router = APIRouter(prefix="/login", tags=["Auth"])
+router = APIRouter(prefix="/auth", tags=["Auth"])
+
+# TODO: merge into a single routers/auth.py file.
 
 
-@router.post("/")
+@router.post("/login/")
 async def login_user(db: db_dep, login_data: UserLoginRequest):
     stmt = select(User).where(User.email == login_data.email)
     user = db.execute(stmt).scalars().first()
@@ -24,6 +26,13 @@ async def login_user(db: db_dep, login_data: UserLoginRequest):
     return {"access_token": access_token, "refresh_token": refresh_toekn}
 
 
-@router.post("/me", response_model=UserProfilResponse)
-async def user_profil(current_user: current_user_jwt_dep):
-    return current_user
+@router.post("/logout/")
+async def logout():
+    # TODO: implement logout with token blacklisting
+    pass
+
+
+@router.post("/change/password/")
+async def change_password():
+    # TODO: implement password change
+    pass

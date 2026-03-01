@@ -165,7 +165,6 @@ class SubCategory(Base):
     )
 
     def __repr__(self):
-
         return f"SubCategory(id={self.id})"
 
 
@@ -186,6 +185,8 @@ class Category(Base):
 
 class ImageItem(Base):
     __tablename__ = "image_items"
+    # TODO: remove this table, m2m with secondary already handles it.
+    # You have no additional field to handle
 
     image_id: Mapped[int] = mapped_column(
         BigInteger, ForeignKey("images.id"), primary_key=True
